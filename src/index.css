@@ -23,6 +23,21 @@
   margin-left: auto;
 }
 
+.signin {
+  margin-left:auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.signin button {
+  background: #f1356d;
+  color: white;
+  border: 0;
+  padding: 12px;
+  border-radius: 8px;
+  cursor: pointer; 
+}
 .navbar a {
   margin-left: 16px;
   padding: 6px;
@@ -117,6 +132,64 @@
   padding: 8px;
   border-radius: 8px;
   cursor: pointer;
+}
+
+.login button {
+  background: #f1356d;
+  color: #fff;
+  border: 0;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.login h3 {
+  font-size: 20px;
+  color: #f1356d;
+  margin-bottom: 30px;
+}
+
+.login label {
+  text-align: left;
+  display: block;
+}
+
+.login input {
+  width: 100%;
+  padding: 6px 10px;
+  margin: 10px 0;
+  border: 1px solid blue;
+  box-sizing: border-box;
+  display: block;
+}
+
+.signup button {
+  background: #f1356d;
+  color: #fff;
+  border: 0;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.signup h3 {
+  font-size: 20px;
+  color: #f1356d;
+  margin-bottom: 30px;
+}
+
+.signup label {
+  text-align: left;
+  display: block;
+}
+
+.signup input {
+  width: 100%;
+  padding: 6px 10px;
+  margin: 10px 0;
+  border: 1px solid blue;
+  box-sizing: border-box;
+  display: block;
 }
 
 .not-found div {

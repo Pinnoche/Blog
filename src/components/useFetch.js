@@ -1,32 +1,42 @@
 import {useState, useEffect} from 'react';
+import { useBlogsContext } from '../hooks/useBlogsContext';
+import { useUserContext } from '../hooks/useUserContext';
 
 const useFetch = (url) => {
-    const [data, setData] = useState(null);
-    const [isPending, setIsPendng] = useState(true);
+    const { user } = useUserContext()
+    const { blogs, dispatch } = useBlogsContext()
+    const [isPending, setIsPending] = useState(true);
     const [error, setError] = useState(false);
 
     useEffect(() =>{
         setTimeout(() =>{
-            fetch(url)
-                .then(res => { 
-                    if(!res.ok){
-                        throw Error('could not fetch data requested');
+            const fetchBlogs = async (url) => {
+                
+                try {
+                    const res = await fetch('http://localhost:8000'+ url, {
+                        method: 'GET',
+                        headers: {
+                            'Authorization': `Bearer ${user.token}`
+                        }
+                    })
+                    const json = await res.json()
+                    if(res.ok){
+                        setIsPending(false);
+                        setError(false);
+                        dispatch({type: 'SET_BLOGS', payload: json })
                     }
-                return  res.json();
-                })
-                .then(data =>{
-                    setData(data);
-                    setIsPendng(false);
-                    setError(false);
-                })
-                .catch(err =>{
-                    setIsPendng(false);
-                    setError(err.message);
-        
-                });
+                } catch (error) {
+                    setError(true)
+                    setIsPending(false);
+                }
+            }
+            if(url && user){
+                fetchBlogs(url)
+            }
             }, 500);
-        },[url]);
-        return {data, isPending, error}
+        },[user, url, dispatch])
+        
+        return {blogs, isPending, error}
 }
 
 export default useFetch;

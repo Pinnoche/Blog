@@ -1,38 +1,40 @@
 import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
+import { useBlogsContext } from '../hooks/useBlogsContext';
+import { useUserContext } from "../hooks/useUserContext";
 
 const Create = () => {
-
+    const { user } = useUserContext()
+    const { dispatch } = useBlogsContext()
     const [title, setTitle] = useState('');
     const [body, setBody] = useState('');
     const [author, setAuthor] = useState('Quadri');
     const [isPending,setIsPending] = useState(false);
-    
     const navigate = useNavigate();
-    
-    
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-            const blog = {title, body, author};
-
-        setIsPending(true);
-        
-       fetch('/api/blogs',{
+        const blog = {title, body, author};
+        setIsPending(true);    
+        const response = await fetch('http://localhost:8000/api/blogs',{
             method: 'POST',
-            headers:{ "content-Type": "application/json"},
-            body: JSON.stringify(blog)
-        })
+            headers:{ 
+                "content-Type": "application/json",
+                'Authorization': `Bearer ${user.token}`
 
-       
-        .then(() =>{
-           
-        
-                console.log("new blog added");
-                setIsPending(false);
-                navigate('/');
-            
-        })
+            },
+            body: JSON.stringify(blog)
+        }) 
+
+        const json = await response.json();
+        if(!response.ok){
+            throw Error(json.error)
+        }
+        if(response.ok){
+            dispatch({ type: 'CREATE_BLOG', payload: json})
+            setIsPending(false);
+            navigate('/');
+        }       
         
         
     }
